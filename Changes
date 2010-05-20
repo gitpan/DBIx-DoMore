@@ -1,5 +1,10 @@
 Revision history for DBIx-DoMore
 
+0.01002    2010-05-20 17:20 CET
+
+   * Error in MANIFEST.SKIP which prevented inc/ from being bundled.
+   * Version fix in POD.
+
 0.01001    2010-05-20 09:00 CET
 
    * POD and Changes fixes.

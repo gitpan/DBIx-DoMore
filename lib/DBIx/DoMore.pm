@@ -7,7 +7,7 @@ use Moose;
 
 use SQL::Tokenizer 'tokenize_sql';
 
-our $VERSION = '0.01001';
+our $VERSION = '0.01002';
 $VERSION = eval $VERSION;
 
 has 'dbh' => (
@@ -90,7 +90,7 @@ DBIx::DoMore - Multiple SQL statements in a single do() call with any DBI driver
 
 =head1 VERSION
 
-Version 0.01000
+Version 0.01002
 
 =head1 SYNOPSIS
 
