@@ -1,0 +1,17 @@
+Changes
+lib/DBIx/DoMore.pm
+Makefile.PL
+MANIFEST
+META.yml
+README
+t/00-load.t
+t/live_manual_rollback.t
+t/live_no_rollback.t
+t/live_rollback.t
+t/split_hard.t
+t/split_simple.t
+t/synopsis.t
+xt/boilerplate.t
+xt/manifest.t
+xt/pod-coverage.t
+xt/pod.t
