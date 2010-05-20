@@ -7,7 +7,7 @@ use Moose;
 
 use SQL::Tokenizer 'tokenize_sql';
 
-our $VERSION = '0.01000';
+our $VERSION = '0.01001';
 $VERSION = eval $VERSION;
 
 has 'dbh' => (
@@ -160,7 +160,7 @@ The following options are recognized:
 =item * C<dbh>
 
 The database handle object as returned by
-L<< C<< DBI->connect() >>|DBI/connect >>.
+L<DBI::connect()|DBI/connect>.
 This option B<is required>.
 
 =item * C<rollback>
@@ -344,7 +344,7 @@ Copyright 2010 Emanuele Zeppieri.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
+by the Free Software Foundation, or the Artistic License.
 
 See http://dev.perl.org/licenses/ for more information.
 
