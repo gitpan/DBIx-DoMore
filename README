@@ -1,9 +1,9 @@
 NAME
-    DBIx::DoMore - Multiple SQL statements in a single do() call with any
-    DBI driver
+    DBIx::DoMore - (**DEPRECATED** use DBIx::MultiStatementDo instead)
+    Multiple SQL statements in a single do() call with any DBI driver
 
 VERSION
-    Version 0.01002
+    Version 0.01003
 
 SYNOPSIS
         use DBI;
@@ -22,13 +22,17 @@ SYNOPSIS
     
         my $dbh = DBI->connect( 'dbi:SQLite:dbname=my.db', '', '' );
     
-        my $do_more = DBIx::DoMore->new( dbh => $dbh );
+        my $batch = DBIx::DoMore->new( dbh => $dbh );
     
         # Multiple SQL statements in a single call
-        my @results = $do_more->do( $create );
+        my @results = $batch->do( $create );
     
         print scalar(@results) . ' statements successfully executed!';
         # 4 statements successfully executed!
+
+WARNING
+    This module has been DEPRECATED. For new development, please use
+    DBIx::MultiStatementDo instead.
 
 DESCRIPTION
     Some DBI drivers don't support the execution of multiple statements in a
@@ -39,10 +43,10 @@ DESCRIPTION
     Here is how DBIx::DoMore works: behind the scenes it parses the SQL
     code, splits it into the atomic statements it is composed of and
     executes them one by one. The logic used to split the SQL code is more
-    sophisticated than a naive blind "split" on the ";" (semicolon)
-    character, so that DBIx::DoMore is able to correctly handle the presence
-    of the semicolon inside identifiers, values or "BEGIN..END" blocks, as
-    shown in the synopsis above.
+    sophisticated than a raw "split" on the ";" (semicolon) character, so
+    that DBIx::DoMore is able to correctly handle the presence of the
+    semicolon inside identifiers, values or "BEGIN..END" blocks, as shown in
+    the synopsis above.
 
     Automatic transactions support is offered by default, so that you'll
     have the *all-or-nothing* behaviour you would probably expect; if you
@@ -70,7 +74,7 @@ METHODS
         automatic transactions. It is set to a true value by default.
 
   "do"
-    *   "$do_more->do( $sql_string )"
+    *   "$batch->do( $sql_string )"
 
     This is the method which actually executes the SQL statements against
     your db. It takes a string containing one or more SQL statements and
@@ -109,32 +113,32 @@ METHODS
     If you want to disable automatic transactions and manage them by
     yourself, you can do something along this:
 
-        my $do_more = DBIx::DoMore->new(
+        my $batch = DBIx::DoMore->new(
             dbh      => $dbh,
             rollback => 0
         );
     
         my @results;
     
-        $do_more->dbh->{AutoCommit} = 0;
-        $do_more->dbh->{RaiseError} = 1;
+        $batch->dbh->{AutoCommit} = 0;
+        $batch->dbh->{RaiseError} = 1;
         eval {
-            @results = $do_more->do( $sql_string );
-            $do_more->dbh->commit;
+            @results = $batch->do( $sql_string );
+            $batch->dbh->commit;
             1
-        } or eval { $do_more->dbh->rollback };
+        } or eval { $batch->dbh->rollback };
 
   "dbh"
-    *   "$do_more->dbh"
+    *   "$batch->dbh"
 
-    *   "$do_more->dbh( $new_dbh )"
+    *   "$batch->dbh( $new_dbh )"
 
         Getter/setter method for the "dbh" option explained above.
 
   "rollback"
-    *   "$do_more->rollback"
+    *   "$batch->rollback"
 
-    *   "$do_more->rollback( $boolean )"
+    *   "$batch->rollback( $boolean )"
 
         Getter/setter method for the "rollback" option explained above.
 

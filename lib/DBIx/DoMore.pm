@@ -7,7 +7,7 @@ use Moose;
 
 use SQL::Tokenizer 'tokenize_sql';
 
-our $VERSION = '0.01002';
+our $VERSION = '0.01003';
 $VERSION = eval $VERSION;
 
 has 'dbh' => (
@@ -86,11 +86,11 @@ __END__
 
 =head1 NAME
 
-DBIx::DoMore - Multiple SQL statements in a single do() call with any DBI driver
+DBIx::DoMore - (**DEPRECATED** use DBIx::MultiStatementDo instead) Multiple SQL statements in a single do() call with any DBI driver
 
 =head1 VERSION
 
-Version 0.01002
+Version 0.01003
 
 =head1 SYNOPSIS
 
@@ -110,13 +110,18 @@ Version 0.01002
     
     my $dbh = DBI->connect( 'dbi:SQLite:dbname=my.db', '', '' );
     
-    my $do_more = DBIx::DoMore->new( dbh => $dbh );
+    my $batch = DBIx::DoMore->new( dbh => $dbh );
     
     # Multiple SQL statements in a single call
-    my @results = $do_more->do( $create );
+    my @results = $batch->do( $create );
     
     print scalar(@results) . ' statements successfully executed!';
     # 4 statements successfully executed!
+
+=head1 WARNING
+
+This module has been DEPRECATED.
+For new development, please use L<DBIx::MultiStatementDo> instead.
 
 =head1 DESCRIPTION
 
@@ -129,8 +134,8 @@ with any DBI driver.
 Here is how DBIx::DoMore works: behind the scenes it parses the SQL code,
 splits it into the atomic statements it is composed of and executes
 them one by one.
-The logic used to split the SQL code is more sophisticated than a naive
-blind C<split> on the C<;> (semicolon) character, so that DBIx::DoMore is
+The logic used to split the SQL code is more sophisticated than a raw
+C<split> on the C<;> (semicolon) character, so that DBIx::DoMore is
 able to correctly handle the presence of the semicolon inside identifiers,
 values or C<BEGIN..END> blocks, as shown in the synopsis above.
 
@@ -174,7 +179,7 @@ automatic transactions. It is set to a true value by default.
 
 =over 4
 
-=item * C<< $do_more->do( $sql_string ) >>
+=item * C<< $batch->do( $sql_string ) >>
 
 =back
 
@@ -214,28 +219,28 @@ statement.
 If you want to disable automatic transactions and manage them by yourself,
 you can do something along this:
 
-    my $do_more = DBIx::DoMore->new(
+    my $batch = DBIx::DoMore->new(
         dbh      => $dbh,
         rollback => 0
     );
     
     my @results;
     
-    $do_more->dbh->{AutoCommit} = 0;
-    $do_more->dbh->{RaiseError} = 1;
+    $batch->dbh->{AutoCommit} = 0;
+    $batch->dbh->{RaiseError} = 1;
     eval {
-        @results = $do_more->do( $sql_string );
-        $do_more->dbh->commit;
+        @results = $batch->do( $sql_string );
+        $batch->dbh->commit;
         1
-    } or eval { $do_more->dbh->rollback };
+    } or eval { $batch->dbh->rollback };
 
 =head2 C<dbh>
 
 =over 4
 
-=item * C<< $do_more->dbh >>
+=item * C<< $batch->dbh >>
 
-=item * C<< $do_more->dbh( $new_dbh ) >>
+=item * C<< $batch->dbh( $new_dbh ) >>
 
 Getter/setter method for the C<dbh> option explained above.
 
@@ -245,9 +250,9 @@ Getter/setter method for the C<dbh> option explained above.
 
 =over 4
 
-=item * C<< $do_more->rollback >>
+=item * C<< $batch->rollback >>
 
-=item * C<< $do_more->rollback( $boolean ) >>
+=item * C<< $batch->rollback( $boolean ) >>
 
 Getter/setter method for the C<rollback> option explained above.
 

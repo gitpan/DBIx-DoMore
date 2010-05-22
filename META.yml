@@ -1,5 +1,5 @@
 ---
-abstract: 'Multiple SQL statements in a single do() call with any DBI driver'
+abstract: '(**DEPRECATED** use DBIx::MultiStatementDo instead) Multiple SQL statements in a single do() call with any DBI driver'
 author:
   - 'Emanuele Zeppieri <emazep@cpan.org>'
 build_requires:
@@ -10,7 +10,7 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: 6.42
 distribution_type: module
-generated_by: 'Module::Install version 0.95'
+generated_by: 'Module::Install version 0.97'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -26,4 +26,4 @@ requires:
   SQL::Tokenizer: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.01002
+version: 0.01003
